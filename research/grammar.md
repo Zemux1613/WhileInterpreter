@@ -1,7 +1,7 @@
 While programmes are inductively defined as follows:
-1. ```x1 := x2 + c``` is a while programm
+1. ```xi := xj + c``` is a while programm
 2. If P1 and P2 are while programms, then ```P1;P2``` is a while programm
-3. If P1 is a while programm, then ```while x1 != 0 do P1 end``` is a while programm
+3. If P1 is a while programm, then ```while xi != 0 do P1 end``` is a while programm
 
 Derived from this inductive definition, a context-free grammar for while-programmes is the following:
 
