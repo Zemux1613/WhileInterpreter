@@ -12,7 +12,7 @@ if __name__ == "__main__":
         print(f"Unter '{path}' ist keine Quellcode Datei.")
         sys.exit(-1)
 
-    source_code = FileUtil.readFile(FileUtil(), path)
+    source_code = FileUtil.read_file(FileUtil(), path)
     instructions = Lexer(source_code).lex()
     for instruction in instructions:
         print(str(instruction))
