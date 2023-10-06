@@ -5,8 +5,7 @@ While programmes are inductively defined as follows:
 
 Derived from this inductive definition, a context-free grammar for while-programmes is the following:
 
-G = (N, A, P, programm) with <br>
-N = {programm, i},<br> 
+G = (N, A, P, programm) with <N = {programm, operator, i},<br> 
 A = {-, +, :=, ;, while, do, end, x, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9},<br> 
 P = {<br>
 programm -> ```xi := xi operator i``` | ```programm;programm``` | ```while xi != 0 do programm end```; <br>
