@@ -47,16 +47,20 @@ class Lexer:
 
 
 class Token(Enum):
-    ASSIGNMENT = r"([a-zA-Z]+[0-9]*\s*:=\s*[a-zA-Z]+[0-9]*\s*(\+|-)\s*[0-9]+)"
-    PRINT = r"(print\s*[a-zA-Z]+[0-9]*)"
-    WHILE = r"(while)"
-    END = r"(end)"
+    ASSIGNMENT = r"([a-zA-Z]+[0-9]*\s*:=\s*[a-zA-Z]+[0-9]*\s*(\+|-)\s*[0-9]+)", False
+    PRINT = r"(print\s*[a-zA-Z]+[0-9]*)", False
+    WHILE = r"(while)", True
+    END = r"(end)", False
 
-    def __init__(self, identifier):
+    def __init__(self, identifier, multi_line):
         self.identifier = identifier
+        self.multi_line = multi_line
 
     def get_identifier(self):
         return self.identifier
+
+    def get_multi_line(self):
+        return self.multi_line
 
     @classmethod
     def all(cls):
@@ -68,5 +72,20 @@ class Instruction:
         self.line = line
         self.token = token
 
+    def get_token(self):
+        return self.token
+
+    def get_line(self):
+        return self.line
+
     def __str__(self):
         return f'{self.line}: {self.token.name}'
+
+
+class MultilineInstruction(Instruction):
+    def __init__(self, line, token, instructions):
+        super().__init__(line, token)
+        self.instructions = instructions
+
+    def get_instructions(self):
+        return self.instructions

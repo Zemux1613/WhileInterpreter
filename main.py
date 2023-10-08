@@ -1,5 +1,6 @@
 import sys
 from Lexer import Lexer
+from Parser import Parser
 
 from utils.FileUtil import *
 
@@ -14,5 +15,10 @@ if __name__ == "__main__":
 
     source_code = FileUtil.read_file(FileUtil(), path)
     instructions = Lexer(source_code).lex()
-    for instruction in instructions:
+   # for instruction in instructions:
+   #     print(str(instruction))
+
+    program = Parser(instructions).parse()
+    print(program)
+    for instruction in program:
         print(str(instruction))
