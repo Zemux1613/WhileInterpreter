@@ -1,45 +1,90 @@
 import sys
 
-import Lexer
-
 
 class Parser:
 
-    def __init__(self, instructions):
-        self.instructions = instructions
-        self.program = []
+    def __init__(self, tokens):
+        self.tokens = tokens
         self.top = None
-        self.multi_line_statement = []
+        # init cellar
+        self.cellar = []
+        self.cellar.append("|")
+        self.cellar.append("s")
 
-    def next_instruction(self):
-        self.top = self.instructions.pop()
+    def next_token(self):
+        print(f"Tokens: {[token.identifier for token in self.tokens]}")
+        print(f"Cellar: {[top for top in self.cellar]}")
+        if not self.tokens or len(self.tokens) == 0:
+            return None
+        self.top = self.tokens.pop(0)
         return self.top
 
     def parse(self):
 
-        while self.instructions:
+        self.next_token()
 
-            self.next_instruction()
+        next_token = self.top
 
-            print(self.top.get_token())
+        print(f"Token: {next_token.get_identifier()} - {next_token.get_value()}")
 
-            if not self.multi_line_statement:
-                if Lexer.Token.END == self.top:
-                    self.multi_line_statement.append(self.top)
-                    self.program.append(self.multi_line_statement)
-                    self.multi_line_statement.clear()
-                    continue
-                elif Lexer.Token.ASSIGNMENT == self.top.get_token() or Lexer.Token.PRINT == self.top.get_token:
-                    self.multi_line_statement.append(self.top)
-                    continue
+        if next_token is None:
+            cellar_top = self.cellar.pop()
 
-            elif Lexer.Token.ASSIGNMENT == self.top.get_token() or Lexer.Token.PRINT == self.top.get_token:
-                self.program.append(self.top)
+            if not cellar_top == "|":
+                sys.exit(f"Invalid Syntax: {self.cellar}")
 
-            elif Lexer.Token.WHILE == self.top.get_token():
-                self.multi_line_statement.append(self.top)
+        if "operator" == next_token.get_identifier():
+            cellar_top = self.cellar.pop()
+            next_item = self.cellar.pop()
 
+            if cellar_top == "operator" and next_item == "i":
+                self.cellar.append(next_item)
+                self.parse()
+                return
             else:
-                sys.exit(f"Invalid syntax in line {self.top.get_line()} \n {str(self.top.get_token)}")
+                self.invalid_syntax(next_token)
 
-        return self.program
+        if ":=" == next_token.get_identifier():
+            cellar_top = self.cellar.pop()
+            next_item = self.cellar.pop()
+
+            if cellar_top == "n=" and next_item == "nx":
+                self.cellar.append(next_item)
+                self.parse()
+                return
+            else:
+                self.invalid_syntax(next_token)
+
+        if "num" == next_token.get_identifier():
+            cellar_top = self.cellar.pop()
+            next_item = self.cellar.pop()
+
+            if cellar_top == "i" and (next_item == "n=" or next_item == "operator" or next_item == "|"):
+                self.cellar.append(next_item)
+                self.parse()
+                return
+            else:
+                self.invalid_syntax(next_token)
+
+        if "x" == next_token.get_identifier():
+            cellar_top = self.cellar.pop()
+            if cellar_top == "s":
+                self.cellar.append("i")
+                self.cellar.append("operator")
+                self.cellar.append("i")
+                self.cellar.append("nx")
+                self.cellar.append("n=")
+                self.cellar.append("i")
+                self.parse()
+                return
+
+            next_item = self.cellar.pop()
+            if cellar_top == "nx" and next_item == "i":
+                self.cellar.append("i")
+                self.parse()
+                return
+
+            self.invalid_syntax(next_token)
+
+    def invalid_syntax(self, next_token):
+        sys.exit(f"Invalid Syntax: {next_token.get_identifier()} - {next_token.get_value()}")
