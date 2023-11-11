@@ -24,7 +24,7 @@ class Lexer:
             if ";" in line:
                 line = line[0:line.index(";")]
 
-            for word in re.sub(r'(x(\d+))', r'x \2', line).split():
+            for word in re.sub(r'([a-zA-Z]+(\d+))', r'x \2', line).split():
                 tokenized_word = word
 
                 tokenized_word = re.sub(r"([0-9])+", "num", tokenized_word)
