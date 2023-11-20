@@ -1,0 +1,7 @@
+a = a + 5;
+b = b + 20;
+while b != 1 do
+    a = a + 5;
+    b = b - 1;
+    print a
+end
