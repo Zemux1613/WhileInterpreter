@@ -8,9 +8,9 @@ class Parser:
         self.position = 0
 
     def consume(self, pattern):
-        # print(f"trying to consume token={self.tokens[self.position]}, patter='{pattern}', position={self.position}, tokens={self.tokens[self.position:]}")
+        print(f"trying to consume token={self.tokens[self.position]}, patter='{pattern}', position={self.position}, tokens={self.tokens[self.position:]}")
         if re.match(pattern, self.tokens[self.position]):
-        #    print(f"consume {pattern}")
+            print(f"consume {pattern}")
             self.position += 1
         else:
             raise Exception(f"invalid syntax, token {self.tokens[self.position]} didn't macht with '{pattern}'")

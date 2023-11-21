@@ -1,0 +1,38 @@
+(programm
+  (programm
+    (programm
+      (programm var = var (operator +) num)
+      ;
+      (programm var = var (operator +) num))
+    ;
+    (programm var = var (operator +) num))
+  ;
+  (programm
+    while
+    var
+    !
+    =
+    num
+    do
+    (programm
+      (programm
+        (programm print var)
+        ;
+        (programm
+          while
+          var
+          !
+          =
+          num
+          do
+          (programm
+            (programm
+              (programm var = var (operator -) num)
+              ;
+              (programm var = var (operator +) num))
+            ;
+            (programm print var))
+          end))
+      ;
+      (programm var = var (operator -) num))
+    end))
