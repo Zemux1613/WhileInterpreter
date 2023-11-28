@@ -30,14 +30,14 @@ def parse_input(parser, tokens, debug=False):
 
 if __name__ == "__main__":
 
-    debug_str = "False" # input("Debugger aktivieren? ")
+    debug_str = input("Debugger aktivieren? ") # "False"
 
     while not re.match("(True|False)", debug_str):
         debug_str = input("Ungültige Eingabe! Debugger aktivieren? ")
 
     debug = bool(debug_str)
 
-    path = ""  # input("Welche Datei soll interpretiert werden? ")
+    path = input("Welche Datei soll interpretiert werden? ")
     if not path:
         path = "./examples/loop_stack.while"
 
@@ -71,7 +71,7 @@ if __name__ == "__main__":
     # Erstellen Sie einen Parser basierend auf der Grammatik
     parser = nltk.EarleyChartParser(grammar=grammar)
 
-    parsed = parse_input(parser, tokenize_source, False)
+    parsed = parse_input(parser, tokenize_source, debug)
     print(f"parse: {parsed}")
 
     if parsed:
