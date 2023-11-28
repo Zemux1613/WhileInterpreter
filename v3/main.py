@@ -3,6 +3,7 @@ from nltk import word_tokenize, CFG
 import sys
 import re
 import StatementCollectorExtention as sce
+from v2.Interpreter import Interpreter
 
 
 def parse_input(parser, tokens, debug=False):
@@ -75,6 +76,10 @@ if __name__ == "__main__":
 
     if parsed:
         statements = sce.StatementCollectorExtention(word_tokenize(source_code)).summarize_statements()
-        generate_code = sce.StatementCollectorExtention.generate_code(sce.Interpreter(statements))
+        generate_code = Interpreter(statements).generate_code()
 
-        print(f'{generate_code}')
+        # code pre-view
+        print(f'\n"{generate_code.strip()}"\n\nProgramm output:\n')
+
+        # execute code
+        exec (generate_code)

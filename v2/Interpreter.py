@@ -8,20 +8,23 @@ class Interpreter:
         formated_source_code = ""
         for line in source_code.split("\n"):
             prefix = ""
-            for i in range(depth):
-                prefix += "\t"
-            if "while" in line:
-                depth += 1
             if "end" in line:
                 depth -= 1
                 line = line.replace("end", "")
+
+            for i in range(depth):
+                prefix += "\t"
+
+            if "while" in line:
+                depth += 1
+
             formated_source_code += prefix + line + "\n"
 
         return formated_source_code
 
     def generate_code(self):
         source_code = ""
-        for statement in self.statements.values():
+        for statement in self.statements:
             # print variable
             if statement.startswith("print"):
                 source_code += f"print({statement.replace('print', '').strip()})\n"

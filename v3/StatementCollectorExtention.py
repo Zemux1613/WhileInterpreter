@@ -1,6 +1,4 @@
-from v2.Interpreter import Interpreter
-
-class StatementCollectorExtention(Interpreter):
+class StatementCollectorExtention:
 
     def __init__(self, tokens):
         self.tokens = tokens
@@ -9,9 +7,10 @@ class StatementCollectorExtention(Interpreter):
         statements = []
         pos = 0
 
-        while ";" in self.tokens[pos:]:
-            index = self.tokens[pos:].index(";")
-
+        while ";" in self.tokens[pos:] or "end" in self.tokens[pos:]:
+            index = pos
+            if ";" in self.tokens[pos:]:
+                index = self.tokens[pos:].index(";")
             join = ' '.join(self.tokens[pos:pos + index])
             if "while" in join:
                 join_split = join.split("do")
@@ -23,7 +22,7 @@ class StatementCollectorExtention(Interpreter):
                 statements.append("end")
             else:
                 statements.append(join)
-
             pos = pos + index + 1
+            pos = pos
 
-        self.statements = statements
+        return statements
