@@ -2,7 +2,7 @@ import nltk
 from nltk import word_tokenize, CFG
 import sys
 import re
-import Interpreter as ip
+import StatementCollectorExtention as sce
 
 
 def parse_input(parser, tokens, debug=False):
@@ -29,9 +29,16 @@ def parse_input(parser, tokens, debug=False):
 
 if __name__ == "__main__":
 
+    debug_str = "False" # input("Debugger aktivieren? ")
+
+    while not re.match("(True|False)", debug_str):
+        debug_str = input("Ungültige Eingabe! Debugger aktivieren? ")
+
+    debug = bool(debug_str)
+
     path = ""  # input("Welche Datei soll interpretiert werden? ")
     if not path:
-        path = "../examples/loop_stack.while"
+        path = "./examples/loop_stack.while"
 
     if not path.endswith(".while"):
         print(f"Unter '{path}' ist keine Quellcode Datei.")
@@ -63,8 +70,11 @@ if __name__ == "__main__":
     # Erstellen Sie einen Parser basierend auf der Grammatik
     parser = nltk.EarleyChartParser(grammar=grammar)
 
-    parsed = parse_input(parser, tokenize_source, True)
+    parsed = parse_input(parser, tokenize_source, False)
     print(f"parse: {parsed}")
 
     if parsed:
-        generate_code = ip.generate_code()
+        statements = sce.StatementCollectorExtention(word_tokenize(source_code)).summarize_statements()
+        generate_code = sce.StatementCollectorExtention.generate_code(sce.Interpreter(statements))
+
+        print(f'{generate_code}')
