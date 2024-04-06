@@ -7,7 +7,7 @@ class StatementCollectorExtention:
         statements = []
         pos = 0
 
-        while ";" in self.tokens[pos:] or "end" in self.tokens[pos:]:
+        while ";" in self.tokens[pos:] or "end" in self.tokens[pos:] or len(self.tokens) > pos:
             index = pos
             if ";" in self.tokens[pos:]:
                 index = self.tokens[pos:].index(";")

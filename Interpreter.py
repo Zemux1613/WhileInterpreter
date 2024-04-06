@@ -8,7 +8,7 @@ class Interpreter:
         formated_source_code = ""
         for line in source_code.split("\n"):
             prefix = ""
-            if "end" in line:
+            if "end" in line and not "append" in line:
                 depth -= 1
                 line = line.replace("end", "")
 
@@ -28,16 +28,38 @@ class Interpreter:
             # print variable
             if statement.startswith("print"):
                 source_code += f"print({statement.replace('print', '').strip()})\n"
+                continue
 
             # end loop
             if statement.startswith("end"):
                 source_code += statement
+                continue
 
             # while loop
             if statement.startswith("while"):
                 if "! =" in statement:
                     statement = statement.replace("! =", "!=")
                 source_code += f"{statement.replace('do', ':')}\n"
+                continue
+
+            # list datastructure
+            if "+=" in statement:
+                statement_split = statement.split("+=")
+
+                var_name = statement_split[0]
+                var_value = statement_split[1]
+
+                declaration = False
+                variable_declaration = var_name + " = "
+                if variable_declaration in source_code:
+                    declaration = True
+
+                if not declaration:
+                    source_code += f"{var_name} = [{var_value}]\n"
+                else:
+                    source_code += f"{var_name}.append({var_value})\n"
+                continue
+
 
             # assignment statement
             elif "+" in statement or "-" in statement:
